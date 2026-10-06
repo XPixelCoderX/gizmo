@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f5f6f3" />
+    <meta name="description" content="Build, explore, and teach with hands-on science experiments in Gizmo Lab." />
+    <title>Gizmo Lab — Make room for wonder</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-frame">
+      <div class="mobile-scrim" id="mobile-scrim"></div>
+      <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+        <a class="brand" href="#overview" aria-label="Gizmo Lab home" data-view-link="overview">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 40 40" fill="none"><path d="M15 5h10M17 5v10L8.5 30.4A3 3 0 0 0 11.1 35h17.8a3 3 0 0 0 2.6-4.6L23 15V5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12.5 27h15M16 21.5h8" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="29.5" cy="10.5" r="3.5" fill="#F2C94C"/></svg>
+          </span>
+          <span class="brand-copy"><strong>gizmo</strong><small>LAB</small></span>
+        </a>
+
+        <div class="side-label">WORKSPACE</div>
+        <nav class="side-nav" aria-label="Workspace">
+          <button class="nav-item is-active" type="button" data-view="overview"><span class="nav-icon" data-icon="home"></span><span>Overview</span></button>
+          <button class="nav-item" type="button" data-view="discover"><span class="nav-icon" data-icon="compass"></span><span>Explore</span><span class="nav-count">3</span></button>
+          <button class="nav-item" type="button" data-view="my-lab"><span class="nav-icon" data-icon="flask"></span><span>My experiments</span><span class="nav-count" id="my-lab-count">0</span></button>
+          <button class="nav-item" type="button" data-view="saved"><span class="nav-icon" data-icon="bookmark"></span><span>Saved experiments</span><span class="nav-count" id="saved-count">0</span></button>
+          <button class="nav-item" type="button" data-view="worksheets"><span class="nav-icon" data-icon="book"></span><span>Worksheets</span></button>
+        </nav>
+
+        <div class="side-label side-label-spaced">YOUR SPACE</div>
+        <div class="side-note">
+          <div class="side-note-icon"><span data-icon="sparkles"></span></div>
+          <div><strong>Make it your lab</strong><p>Build a hands-on experiment, your way.</p></div>
+          <button class="side-note-action" type="button" data-action="new-experiment" aria-label="Create an experiment"><span data-icon="plus"></span></button>
+        </div>
+
+        <div class="sidebar-bottom">
+          <div class="ai-soon-card">
+            <div class="ai-soon-top"><span class="ai-sparkle" data-icon="sparkles"></span><span class="soon-pill">COMING SOON</span></div>
+            <strong>Dream it. Gizmo it.</strong>
+            <p>AI experiment builder is on the way. For now, create with your own ideas.</p>
+          </div>
+          <div class="profile-row">
+            <div class="avatar">A</div>
+            <div class="profile-copy"><strong>Alex Rivera</strong><span>Curious learner</span></div>
+            <button class="icon-button profile-more" aria-label="Profile options" type="button" title="Profile options"><span data-icon="more"></span></button>
+          </div>
+        </div>
+      </aside>
+
+      <main class="main-shell">
+        <header class="topbar">
+          <button class="icon-button mobile-menu" id="mobile-menu" type="button" aria-label="Open navigation"><span data-icon="menu"></span></button>
+          <div class="breadcrumbs" id="breadcrumbs"><span>Lab space</span><span class="crumb-slash">/</span><strong>Overview</strong></div>
+          <div class="topbar-actions">
+            <label class="search-box" for="global-search">
+              <span data-icon="search"></span>
+              <input id="global-search" type="search" placeholder="Search experiments..." autocomplete="off" />
+              <kbd>⌘ K</kbd>
+            </label>
+            <button class="button button-dark top-create" type="button" data-action="new-experiment"><span data-icon="plus"></span><span>New experiment</span></button>
+            <div class="avatar top-avatar" aria-label="Alex Rivera">A</div>
+          </div>
+        </header>
+
+        <div id="app-content" class="page-content" tabindex="-1"></div>
+      </main>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <dialog class="modal" id="experiment-dialog" aria-labelledby="experiment-dialog-title">
+      <div class="modal-head">
+        <div><div class="eyebrow">YOUR LAB, YOUR RULES</div><h2 id="experiment-dialog-title">Create an experiment</h2><p>Start with a question. Make something worth exploring.</p></div>
+        <button class="icon-button modal-close" type="button" data-close-dialog="experiment-dialog" aria-label="Close"><span data-icon="close"></span></button>
+      </div>
+      <form id="experiment-form" class="modal-form">
+        <div class="form-grid">
+          <label class="field field-wide"><span>Experiment name <i>*</i></span><input id="exp-title" name="title" type="text" placeholder="e.g. Can plants grow in the dark?" maxlength="72" required /></label>
+          <label class="field"><span>Subject <i>*</i></span><select id="exp-subject" name="subject" required><option value="Physics">Physics</option><option value="Biology">Biology</option><option value="Chemistry">Chemistry</option><option value="Earth science">Earth science</option><option value="Other">Other</option></select></label>
+          <label class="field"><span>For learners</span><select id="exp-grade" name="grade"><option>Grades 4–6</option><option selected>Grades 6–9</option><option>Grades 9–12</option><option>All ages</option></select></label>
+          <label class="field field-wide"><span>What will learners explore? <i>*</i></span><textarea id="exp-description" name="description" rows="3" maxlength="240" placeholder="Describe the big idea and what makes this experiment interesting..." required></textarea></label>
+          <label class="field"><span>Interactive model</span><select id="exp-template" name="template"><option value="pendulum">Pendulum & motion</option><option value="plant">Plant growth</option><option value="circuit">Electric circuits</option></select></label>
+          <label class="field"><span>Time to explore</span><select id="exp-duration" name="duration"><option>5 min</option><option selected>10 min</option><option>15 min</option><option>20 min</option></select></label>
+          <label class="field field-wide"><span>Experiment steps <small>Optional · one step per line</small></span><textarea id="exp-steps" name="steps" rows="3" placeholder="Change one variable at a time&#10;Record what happens&#10;Explain your results"></textarea></label>
+        </div>
+        <details class="worksheet-add-on">
+          <summary><span class="summary-plus" data-icon="plus"></span><span>Add a worksheet to this experiment</span><span class="optional-tag">OPTIONAL</span></summary>
+          <div class="worksheet-fields">
+            <label class="field"><span>Worksheet title</span><input id="exp-worksheet-title" name="worksheetTitle" type="text" placeholder="e.g. My motion observations" maxlength="72" /></label>
+            <label class="field"><span>Questions <small>One question per line</small></span><textarea id="exp-worksheet-questions" name="worksheetQuestions" rows="4" placeholder="What did you notice?&#10;How did changing the variable affect your results?&#10;What would you test next?"></textarea></label>
+          </div>
+        </details>
+        <div class="modal-foot"><span class="form-footnote"><span data-icon="lock"></span>Saved in this browser. No AI or account needed.</span><button class="button button-dark" type="submit"><span data-icon="plus"></span>Create experiment</button></div>
+      </form>
+    </dialog>
+
+    <dialog class="modal modal-worksheet" id="worksheet-dialog" aria-labelledby="worksheet-dialog-title">
+      <div class="modal-head">
+        <div><div class="eyebrow">PUT YOUR THINKING ON PAPER</div><h2 id="worksheet-dialog-title">Create a worksheet</h2><p>Write prompts that turn curiosity into good questions.</p></div>
+        <button class="icon-button modal-close" type="button" data-close-dialog="worksheet-dialog" aria-label="Close"><span data-icon="close"></span></button>
+      </div>
+      <form id="worksheet-form" class="modal-form">
+        <div class="form-grid">
+          <label class="field field-wide"><span>Worksheet name <i>*</i></span><input id="sheet-title" name="title" type="text" placeholder="e.g. The great plant-growth investigation" maxlength="72" required /></label>
+          <label class="field field-wide"><span>Connect to an experiment <small>Optional</small></span><select id="sheet-experiment" name="experiment"><option value="">No linked experiment</option></select></label>
+          <label class="field field-wide"><span>Instructions <small>Optional</small></span><textarea id="sheet-instructions" name="instructions" rows="2" placeholder="Explore the model, then use these questions to record your thinking."></textarea></label>
+          <label class="field field-wide"><span>Questions <i>*</i> <small>One question per line</small></span><textarea id="sheet-questions" name="questions" rows="6" placeholder="What did you observe?&#10;Which variable had the biggest effect?&#10;What would you investigate next?" required></textarea></label>
+        </div>
+        <div class="modal-foot"><span class="form-footnote"><span data-icon="lock"></span>Worksheets and answers stay on this device.</span><button class="button button-dark" type="submit"><span data-icon="plus"></span>Create worksheet</button></div>
+      </form>
+    </dialog>
+
+    <script src="app.js" defer></script>
+  </body>
+</html>
